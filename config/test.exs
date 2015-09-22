@@ -19,3 +19,6 @@ config :file_upload, FileUpload.Repo,
   password: "postgres",
   database: "file_upload_test",
   pool: Ecto.Adapters.SQL.Sandbox
+
+config :file_upload, :upload_path, "test/priv/static/images/uploads"
+

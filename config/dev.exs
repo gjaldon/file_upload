@@ -39,3 +39,5 @@ config :file_upload, FileUpload.Repo,
   password: "postgres",
   database: "file_upload_dev",
   pool_size: 10
+
+config :file_upload, :upload_path, "priv/static/images/uploads"

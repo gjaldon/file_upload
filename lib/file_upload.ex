@@ -6,6 +6,11 @@ defmodule FileUpload do
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
 
+    upload_path = Application.get_env(:file_upload, :upload_path)
+    unless File.exists?(upload_path) do
+      File.mkdir_p!(upload_path)
+    end
+
     children = [
       # Start the endpoint when the application starts
       supervisor(FileUpload.Endpoint, []),
