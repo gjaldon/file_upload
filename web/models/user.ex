@@ -15,6 +15,8 @@ defmodule FileUpload.User do
 
   before_insert :put_file
   before_update :put_file
+  before_update :rm_file
+  after_delete :rm_file_on_delete
 
   def put_file(changeset) do
     if upload = get_change(changeset, :avatar_upload) do
@@ -28,6 +30,31 @@ defmodule FileUpload.User do
     else
       changeset
     end
+  end
+
+  def rm_file(%{model: model} = changeset) do
+    new_filepath = get_change(changeset, :avatar)
+    old_filepath = Map.get(model, :avatar)[:filepath]
+
+    if new_filepath && old_filepath do
+      rm_files(old_filepath)
+    end
+
+    changeset
+  end
+
+  def rm_file_on_delete(%{model: model} = changeset) do
+    old_filepath = Map.get(model, :avatar)[:filepath]
+
+    if old_filepath do
+      rm_files(old_filepath)
+    end
+
+    changeset
+  end
+
+  defp rm_files(old_filepath) do
+    File.rm!("." <> old_filepath)
   end
 
   defp copy_files(tmp_path, filepath) do

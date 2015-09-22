@@ -36,7 +36,7 @@ defmodule FileUpload.UserTest do
 
     assert avatar
     assert avatar.filename == params.avatar_upload.filename
-    assert File.exists? Path.expand(".." <> user.avatar.filepath, __DIR__)
+    assert File.exists? Path.expand("../.." <> avatar.filepath, __DIR__)
   end
 
   test "removes old file on update" do
@@ -46,6 +46,15 @@ defmodule FileUpload.UserTest do
            |> Map.put(:avatar_upload, nil)
     Repo.update!(User.changeset(user, params))
 
-    refute File.exists? Path.expand(".." <> user.avatar.filepath, __DIR__)
+    refute File.exists? Path.expand("../.." <> user.avatar.filepath, __DIR__)
+  end
+
+  test "removes file on delete" do
+    params = %{avatar_upload: fake_upload()}
+    user = User.changeset(%User{}, params) |> Repo.insert!
+
+    Repo.delete! user
+
+    refute File.exists? Path.expand("../.." <> user.avatar.filepath, __DIR__)
   end
 end
