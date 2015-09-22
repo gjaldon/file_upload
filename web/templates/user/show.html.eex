@@ -9,7 +9,11 @@
 
   <li>
     <strong>Avatar:</strong>
-    <img alt="<%= @user.avatar["filename"] %>" src="<%= avatar_src(@conn, @user) %>">
+    <%= if @user.avatar do %>
+      <img alt="<%= @user.avatar["filename"] %>" src="<%= avatar_src(@conn, @user) %>">
+    <% else %>
+      N/A
+    <% end %>
   </li>
 
 </ul>
