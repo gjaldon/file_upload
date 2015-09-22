@@ -22,7 +22,7 @@ defmodule FileUpload.User do
     if upload = get_change(changeset, :avatar_upload) do
       %{path: tmp_path, filename: filename} = upload
       file_id  = generate_file_id()
-      filepath = Path.join([@upload_path, file_id, Path.extname(filename)])
+      filepath = Path.join([@upload_path, file_id <> Path.extname(filename)])
       copy_files(tmp_path, filepath)
       map = %{filename: filename, filepath: "/" <> filepath}
 

@@ -4,6 +4,6 @@ defmodule FileUpload.UserView do
   alias FileUpload.User
 
   def avatar_src(conn, %User{avatar: avatar}) do
-    static_path(conn, User.upload_path <> avatar)
+    static_path(conn, "/" <> Path.relative_to(avatar["filepath"], "/priv/static"))
   end
 end
